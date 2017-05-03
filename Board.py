@@ -50,9 +50,12 @@ class Board:
         self.state = self.state[::-1].swapcase()
 
     def move(self, move):
-        start, finish = move
-        if not self.state[start].isupper():
+        """Make a move based on indices of the state of the board. Pass in
+        the start and ending indices as a two tuple. Move validity
+        enforced by checking if it is generated in generate_moves()"""
+        if move not in self.generate_moves():
             raise KeyError
+        start, finish = move
         target = self.state[finish]
         self.undo_stack.append((start, finish, target))
         self.__put(finish, self.state[start])
