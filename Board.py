@@ -37,6 +37,14 @@ class Board:
 
     ##########################################################################
 
+    class IllegalMoveException(Exception):
+
+        def __init__(self, val):
+            self.val = val
+
+        def __str__(self):
+            return repr(self.val)
+
     def __init__(self, state=starting_position):
         self.state = state
         self.undo_stack = []
@@ -53,9 +61,11 @@ class Board:
         """Make a move based on indices of the state of the board. Pass in
         the start and ending indices as a two tuple. Move validity
         enforced by checking if it is generated in generate_moves()"""
-        if move not in self.generate_moves():
-            raise KeyError
         start, finish = move
+        if not self.state[start].isupper():
+            raise self.IllegalMoveException("You don't control that square!")
+        elif move not in self.generate_moves():
+            raise self.IllegalMoveException("That piece can't move that way!")
         target = self.state[finish]
         self.undo_stack.append((start, finish, target))
         self.__put(finish, self.state[start])
