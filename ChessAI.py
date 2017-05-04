@@ -44,6 +44,7 @@ class ChessAI:
         return min_score
 
     def get_move(self, board):
+        print('Thinking...')
         self.think_count = 0
         best_score, best_move = -9999999, None
         for move in board.generate_moves():
@@ -53,4 +54,6 @@ class ChessAI:
                 best_score = guarantee
                 best_move = move
             board.undo()
+        print('Considered ' + str(self.think_count) + ' leaves.')
+        print()
         return best_move
